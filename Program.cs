@@ -1,4 +1,6 @@
+using Gherghel_Anamaria_Lab2;
 using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Gherghel_Anamaria_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Gherghel_Anamaria_Lab2Context' not found.");
 

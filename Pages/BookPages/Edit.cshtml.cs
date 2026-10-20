@@ -1,5 +1,7 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Gherghel_Anamaria_Lab2.Models;
 
@@ -19,52 +21,55 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (id is null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
-        if (book is null)
+        var book = await _context.Book.FirstOrDefaultAsync(b => b.ID == id);
+
+        if (book == null)
         {
             return NotFound();
         }
+
         Book = book;
+        LoadLists();
+
         return Page();
     }
 
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
         {
+            LoadLists();
             return Page();
         }
 
-        _context.Attach(Book).State = EntityState.Modified;
+        var bookToUpdate = await _context.Book.FindAsync(Book.ID);
 
-        try
+        if (bookToUpdate == null)
         {
-            await _context.SaveChangesAsync();
+            return NotFound();
         }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!BookExists(Book.ID))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+
+        bookToUpdate.Title = Book.Title;
+        bookToUpdate.Price = Book.Price;
+        bookToUpdate.AuthorsID = Book.AuthorsID;
+        bookToUpdate.PublisherID = Book.PublisherID;
+
+        await _context.SaveChangesAsync();
 
         return RedirectToPage("./Index");
     }
 
-    private bool BookExists(int id)
+    private void LoadLists()
     {
-        return _context.Book.Any(e => e.ID == id);
+        ViewData["PublisherID"] =
+            new SelectList(_context.Publisher, "ID", "PublisherName", Book?.PublisherID);
+
+        ViewData["AuthorsID"] =
+            new SelectList(_context.Authors, "ID", "LastName", Book?.AuthorsID);
     }
 }

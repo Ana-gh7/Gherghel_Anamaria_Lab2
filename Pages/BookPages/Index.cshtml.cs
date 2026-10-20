@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Gherghel_Anamaria_Lab2.Models;
@@ -18,6 +17,9 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        Book = await _context.Book.ToListAsync();
+        Book = await _context.Book
+            .Include(b => b.Publisher)
+            .Include(b => b.Authors)
+            .ToListAsync();
     }
 }

@@ -1,6 +1,7 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Gherghel_Anamaria_Lab2.Models;
 
 namespace Gherghel_Anamaria_Lab2.Pages.BookPages;
@@ -14,19 +15,20 @@ public class CreateModel : PageModel
         _context = context;
     }
 
-    public IActionResult OnGet()
-    {
-        return Page();
-    }
-
     [BindProperty]
     public Book Book { get; set; } = default!;
 
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD.
+    public IActionResult OnGet()
+    {
+        LoadLists();
+        return Page();
+    }
+
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
         {
+            LoadLists();
             return Page();
         }
 
@@ -34,5 +36,14 @@ public class CreateModel : PageModel
         await _context.SaveChangesAsync();
 
         return RedirectToPage("./Index");
+    }
+
+    private void LoadLists()
+    {
+        ViewData["PublisherID"] =
+            new SelectList(_context.Publisher, "ID", "PublisherName");
+
+        ViewData["AuthorsID"] =
+            new SelectList(_context.Authors, "ID", "LastName");
     }
 }

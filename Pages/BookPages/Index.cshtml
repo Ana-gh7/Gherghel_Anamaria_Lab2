@@ -1,14 +1,14 @@
-@page
+@page "/"
 @model Gherghel_Anamaria_Lab2.Pages.BookPages.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Books";
 }
 
-<h1>Index</h1>
+<h1>Books</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="./Create">Create New</a>
 </p>
 
 <table class="table">
@@ -18,19 +18,28 @@
             <th>Author</th>
             <th>Price</th>
             <th>Publisher</th>
+            <th>BookCategories</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Book)
+        @foreach (var item in Model.BookD.Books)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@item.Title</td>
                 <td>
                     @item.Authors?.FirstName @item.Authors?.LastName
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@item.Price</td>
                 <td>@item.Publisher?.PublisherName</td>
+                <td>
+                    @foreach (var category in item.BookCategories)
+                    {
+                        <div>
+                            @category.Category?.ID @category.Category?.CategoryName
+                        </div>
+                    }
+                </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                     <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |

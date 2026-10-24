@@ -18,5 +18,8 @@ namespace Gherghel_Anamaria_Lab2.Models
         public int? PublisherID { get; set; }
 
         public Publisher? Publisher { get; set; }
+
+        public ICollection<BookCategory> BookCategories { get; set; }
+    = new List<BookCategory>();
     }
 }

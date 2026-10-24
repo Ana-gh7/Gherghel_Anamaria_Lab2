@@ -1,3 +1,4 @@
+
 @page
 @model Gherghel_Anamaria_Lab2.Pages.BookPages.EditModel
 
@@ -11,20 +12,19 @@
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="Book.ID" />
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Book.Title" class="control-label"></label>
                 <input asp-for="Book.Title" class="form-control" />
                 <span asp-validation-for="Book.Title" class="text-danger"></span>
             </div>
 
-            
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Book.AuthorsID" class="control-label">Author</label>
                 <select asp-for="Book.AuthorsID" class="form-control"
                         asp-items="ViewBag.AuthorsID">
@@ -33,20 +33,35 @@
                 <span asp-validation-for="Book.AuthorsID" class="text-danger"></span>
             </div>
 
-
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Book.Price" class="control-label"></label>
                 <input asp-for="Book.Price" class="form-control" />
                 <span asp-validation-for="Book.Price" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Book.PublisherID" class="control-label">Publisher</label>
                 <select asp-for="Book.PublisherID" class="form-control"
                         asp-items="ViewBag.PublisherID">
                     <option value="">-- Select Publisher --</option>
                 </select>
                 <span asp-validation-for="Book.PublisherID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Categories</label>
+                <div class="row">
+                    @foreach (var category in Model.AssignedCategoryDataList)
+                    {
+                        <div class="col-md-6">
+                            <input type="checkbox"
+                                   name="selectedCategories"
+                                   value="@category.CategoryID"
+                                   checked="@category.Assigned" />
+                            @category.Name
+                        </div>
+                    }
+                </div>
             </div>
 
             <div class="form-group mt-3">

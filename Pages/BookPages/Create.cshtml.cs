@@ -6,7 +6,7 @@ using Gherghel_Anamaria_Lab2.Models;
 
 namespace Gherghel_Anamaria_Lab2.Pages.BookPages;
 
-public class CreateModel : PageModel
+public class CreateModel : BookCategoriesPageModel
 {
     private readonly Gherghel_Anamaria_Lab2Context _context;
 
@@ -20,15 +20,43 @@ public class CreateModel : PageModel
 
     public IActionResult OnGet()
     {
-        LoadLists();
+        ViewData["PublisherID"] =
+            new SelectList(_context.Publisher, "ID", "PublisherName");
+
+        ViewData["AuthorsID"] =
+            new SelectList(_context.Authors, "ID", "LastName");
+
+        var book = new Book();
+        book.BookCategories = new List<BookCategory>();
+
+        PopulateAssignedCategoryData(_context, book);
+
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync()
+
+    public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
     {
+        var newBook = new Book();
+        newBook.BookCategories = new List<BookCategory>();
+
+        if (selectedCategories != null)
+        {
+            foreach (var category in selectedCategories)
+            {
+                newBook.BookCategories.Add(new BookCategory
+                {
+                    CategoryID = int.Parse(category)
+                });
+            }
+        }
+
+        Book.BookCategories = newBook.BookCategories;
+
         if (!ModelState.IsValid)
         {
             LoadLists();
+            PopulateAssignedCategoryData(_context, Book);
             return Page();
         }
 
@@ -37,6 +65,7 @@ public class CreateModel : PageModel
 
         return RedirectToPage("./Index");
     }
+
 
     private void LoadLists()
     {

@@ -11,6 +11,6 @@ namespace Gherghel_Anamaria_Lab2.Models
         [Required]
         public string PublisherName { get; set; } = string.Empty;
 
-        public ICollection<Book>? Books { get; set; }
+        public ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }

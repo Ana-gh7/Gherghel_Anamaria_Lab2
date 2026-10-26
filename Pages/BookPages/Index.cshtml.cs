@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Gherghel_Anamaria_Lab2.Models;
+using System.Linq;
 
 namespace Gherghel_Anamaria_Lab2.Pages.BookPages;
 
@@ -20,8 +21,29 @@ public class IndexModel : PageModel
 
     public int CategoryID { get; set; }
 
-    public async Task OnGetAsync(int? id, int? categoryID)
+
+    public string TitleSort { get; set; } = "";
+
+    public string AuthorSort { get; set; } = "";
+
+    public string? CurrentFilter { get; set; }
+
+    public async Task OnGetAsync(
+     int? id,
+     int? categoryID,
+     string? sortOrder,
+     string? searchString)
     {
+        TitleSort = string.IsNullOrEmpty(sortOrder)
+            ? "title_desc"
+            : "";
+
+        AuthorSort = sortOrder == "author"
+            ? "author_desc"
+            : "author";
+
+        CurrentFilter = searchString;
+
         BookD.Books = await _context.Book
             .Include(b => b.Publisher)
             .Include(b => b.Authors)
@@ -30,6 +52,17 @@ public class IndexModel : PageModel
             .AsNoTracking()
             .OrderBy(b => b.Title)
             .ToListAsync();
+
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            BookD.Books = BookD.Books
+                .Where(b =>
+                    b.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    (b.Authors != null &&
+                     (b.Authors.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                      b.Authors.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))));
+        }
 
         if (id != null)
         {
@@ -45,6 +78,31 @@ public class IndexModel : PageModel
         if (categoryID != null)
         {
             CategoryID = categoryID.Value;
+        }
+
+        switch (sortOrder)
+        {
+            case "title_desc":
+                BookD.Books = BookD.Books
+                    .OrderByDescending(b => b.Title);
+                break;
+
+            case "author":
+                BookD.Books = BookD.Books
+                    .OrderBy(b => b.Authors!.LastName)
+                    .ThenBy(b => b.Authors!.FirstName);
+                break;
+
+            case "author_desc":
+                BookD.Books = BookD.Books
+                    .OrderByDescending(b => b.Authors!.LastName)
+                    .ThenByDescending(b => b.Authors!.FirstName);
+                break;
+
+            default:
+                BookD.Books = BookD.Books
+                    .OrderBy(b => b.Title);
+                break;
         }
     }
 }

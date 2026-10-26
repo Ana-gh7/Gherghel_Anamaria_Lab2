@@ -11,11 +11,38 @@
     <a asp-page="./Create">Create New</a>
 </p>
 
+
+<form>
+    <p>
+        Search:
+        <input type="text" name="searchString" value="@Model.CurrentFilter" />
+        <input type="submit" value="Search" />
+        <a asp-page="./Index">Back to full List</a>
+    </p>
+</form>
+
+
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Author</th>
+
+          
+            <th>
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.TitleSort"
+                   asp-route-searchString="@Model.CurrentFilter">
+                    Title
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.AuthorSort"
+                   asp-route-searchString="@Model.CurrentFilter">
+                    Author
+                </a>
+            </th>
+
+  
             <th>Price</th>
             <th>Publisher</th>
             <th>BookCategories</th>

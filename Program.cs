@@ -1,10 +1,14 @@
 using Gherghel_Anamaria_Lab2;
 using Microsoft.EntityFrameworkCore;
+using Gherghel_Anamaria_Lab2.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Gherghel_Anamaria_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Gherghel_Anamaria_Lab2Context' not found.");
 
 builder.Services.AddDbContext<Gherghel_Anamaria_Lab2Context>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<Gherghel_Anamaria_Lab2Context>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -23,6 +27,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

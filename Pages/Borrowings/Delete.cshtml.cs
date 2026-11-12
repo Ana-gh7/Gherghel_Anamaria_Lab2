@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Gherghel_Anamaria_Lab2.Models;
 using Gherghel_Anamaria_Lab2;
 
-namespace Gherghel_Anamaria_Lab2.Pages.BorrowingPages;
+namespace Gherghel_Anamaria_Lab2.Pages.Borrowings;
 
 public class DeleteModel : PageModel
 {
@@ -25,7 +25,12 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var borrowing = await _context.Borrowing.FirstOrDefaultAsync(m => m.ID == id);
+        var borrowing = await _context.Borrowing
+    .Include(b => b.Member)
+    .Include(b => b.Book)
+        .ThenInclude(b => b!.Authors)
+    .FirstOrDefaultAsync(m => m.ID == id);
+
         if (borrowing is null)
         {
             return NotFound();

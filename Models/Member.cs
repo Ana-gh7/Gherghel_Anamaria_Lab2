@@ -11,8 +11,10 @@ namespace Gherghel_Anamaria_Lab2.Models
 
         public string? LastName { get; set; }
 
-        public string? Adress { get; set; }
+        public string? Address { get; set; }
 
+        [Required]
+        [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
         public string? Phone { get; set; }
@@ -29,5 +31,3 @@ namespace Gherghel_Anamaria_Lab2.Models
         public ICollection<Borrowing>? Borrowings { get; set; }
     }
 }
-
-

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Gherghel_Anamaria_Lab2.Models;
 using Gherghel_Anamaria_Lab2;
 
-namespace Gherghel_Anamaria_Lab2.Pages.BorrowingPages;
+namespace Gherghel_Anamaria_Lab2.Pages.Borrowings;
 
 public class CreateModel : PageModel
 {
@@ -34,16 +34,36 @@ public class CreateModel : PageModel
             {
                 x.ID,
                 BookFullName = x.Title + " - " +
-                    x.Authors!.LastName + " " +
-                    x.Authors.FirstName
+                    (x.Authors != null
+                        ? x.Authors.LastName + " " + x.Authors.FirstName
+                        : "Autor necunoscut")
             });
 
         ViewData["BookID"] = new SelectList(
             bookList, "ID", "BookFullName");
 
+        var members = _context.Member
+            .Select(m => new
+            {
+                m.ID,
+                MemberName = m.FirstName + " " + m.LastName,
+                m.Email
+            })
+            .ToList();
+
         ViewData["MemberID"] = new SelectList(
-            _context.Member, "ID", "FullName");
+            members.Select(m => new
+            {
+                m.ID,
+                MemberName = !string.IsNullOrWhiteSpace(m.MemberName.Trim())
+                    ? m.MemberName
+                    : m.Email
+            }),
+            "ID",
+            "MemberName");
     }
+
+
 
     public async Task<IActionResult> OnPostAsync()
     {

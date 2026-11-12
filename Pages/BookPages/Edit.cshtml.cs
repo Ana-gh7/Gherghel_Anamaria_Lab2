@@ -27,9 +27,9 @@ public class EditModel : BookCategoriesPageModel
         }
 
         Book = await _context.Book
-     .Include(b => b.BookCategories)
-         .ThenInclude(bc => bc.Category)
-     .FirstOrDefaultAsync(b => b.ID == id);
+            .Include(b => b.BookCategories)
+            .ThenInclude(bc => bc.Category)
+            .FirstOrDefaultAsync(b => b.ID == id) ?? new Book();
 
         if (Book == null)
         {

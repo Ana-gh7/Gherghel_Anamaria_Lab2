@@ -1,6 +1,6 @@
 
 @page
-@model Gherghel_Anamaria_Lab2.Pages.BorrowingPages.IndexModel
+@model Gherghel_Anamaria_Lab2.Pages.Borrowings.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -41,7 +41,7 @@
                     @Html.DisplayFor(modelItem => item.Book!.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Book!.Authors!.FullName)
+                    @(item.Book!.Authors!.FirstName + " " + item.Book.Authors.LastName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ReturnDate)

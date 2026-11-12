@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Gherghel_Anamaria_Lab2.Models;
 using Gherghel_Anamaria_Lab2;
 
-namespace Gherghel_Anamaria_Lab2.Pages.MemberPages;
+namespace Gherghel_Anamaria_Lab2.Pages.Members;
 
 public class DeleteModel : PageModel
 {

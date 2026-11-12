@@ -1,5 +1,5 @@
 @page
-@model Gherghel_Anamaria_Lab2.Pages.MemberPages.IndexModel
+@model Gherghel_Anamaria_Lab2.Pages.Members.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -7,9 +7,7 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +18,7 @@
                 @Html.DisplayNameFor(model => model.Member[0].LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Member[0].Adress)
+                @Html.DisplayNameFor(model => model.Member[0].Address)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Member[0].Email)
@@ -47,7 +45,7 @@
                 @Html.DisplayFor(model => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Adress)
+                @Html.DisplayFor(model => item.Address)
             </td>
             <td>
                 @Html.DisplayFor(model => item.Email)
@@ -63,8 +61,7 @@
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a>
             </td>
         </tr>
 }

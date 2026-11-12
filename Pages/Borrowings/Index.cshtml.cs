@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Gherghel_Anamaria_Lab2.Models;
 using Gherghel_Anamaria_Lab2;
 
-namespace Gherghel_Anamaria_Lab2.Pages.BorrowingPages;
+namespace Gherghel_Anamaria_Lab2.Pages.Borrowings;
 
 public class IndexModel : PageModel
 {

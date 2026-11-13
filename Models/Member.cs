@@ -17,6 +17,8 @@ namespace Gherghel_Anamaria_Lab2.Models
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
+        [RegularExpression(@"^0[0-9]{3}[-. ]?[0-9]{3}[-. ]?[0-9]{3}$",
+    ErrorMessage = "Telefonul trebuie sa inceapa cu 0 si sa fie de forma 0722-123-123, 0722.123.123 sau 0722 123 123")]
         public string? Phone { get; set; }
 
         [Display(Name = "Full Name")]

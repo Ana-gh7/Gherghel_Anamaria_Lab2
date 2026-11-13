@@ -1,10 +1,13 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
 namespace Gherghel_Anamaria_Lab2.Models
 {
     public class Book
     {
         public int ID { get; set; }
 
+        [Required(ErrorMessage = "Titlul cartii este obligatoriu")]
+        [StringLength(150, MinimumLength = 3,
+    ErrorMessage = "Titlul trebuie sa aiba intre 3 si 150 de caractere")]
         public string Title { get; set; } = string.Empty;
 
         public decimal Price { get; set; }

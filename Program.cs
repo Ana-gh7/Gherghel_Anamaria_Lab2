@@ -8,10 +8,22 @@ var connectionString = builder.Configuration.GetConnectionString("Gherghel_Anama
 
 builder.Services.AddDbContext<Gherghel_Anamaria_Lab2Context>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<Gherghel_Anamaria_Lab2Context>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+    options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<Gherghel_Anamaria_Lab2Context>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("Admin"));
+});
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Publishers", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/CategoryPages", "AdminPolicy");
+});
 
 var app = builder.Build();
 

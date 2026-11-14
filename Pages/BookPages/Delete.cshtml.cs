@@ -1,3 +1,5 @@
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +7,7 @@ using Gherghel_Anamaria_Lab2.Models;
 
 namespace Gherghel_Anamaria_Lab2.Pages.BookPages;
 
+[Authorize(Roles = "Admin")]
 public class DeleteModel : PageModel
 {
     private readonly Gherghel_Anamaria_Lab2Context _context;
@@ -25,9 +28,10 @@ public class DeleteModel : PageModel
         }
 
         var book = await _context.Book
-     .Include(b => b.Authors)
-     .Include(b => b.Publisher)
-     .FirstOrDefaultAsync(b => b.ID == id);
+            .Include(b => b.Authors)
+            .Include(b => b.Publisher)
+            .FirstOrDefaultAsync(b => b.ID == id);
+
         if (book is null)
         {
             return NotFound();
@@ -48,9 +52,10 @@ public class DeleteModel : PageModel
         }
 
         var book = await _context.Book
-    .Include(b => b.Authors)
-    .Include(b => b.Publisher)
-    .FirstOrDefaultAsync(b => b.ID == id);
+            .Include(b => b.Authors)
+            .Include(b => b.Publisher)
+            .FirstOrDefaultAsync(b => b.ID == id);
+
         if (book != null)
         {
             Book = book;

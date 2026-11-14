@@ -19,11 +19,20 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin"));
 });
 // Add services to the container.
+
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizeFolder("/Publishers", "AdminPolicy");
-    options.Conventions.AuthorizeFolder("/CategoryPages", "AdminPolicy");
+options.Conventions.AuthorizeFolder("/BookPages");
+
+options.Conventions.AllowAnonymousToPage("/BookPages/Index");
+options.Conventions.AllowAnonymousToPage("/BookPages/Details");
+
+options.Conventions.AuthorizeFolder("/Publishers", "AdminPolicy");
+options.Conventions.AuthorizeFolder("/CategoryPages", "AdminPolicy");
+options.Conventions.AuthorizeFolder("/Members", "AdminPolicy");
 });
+
+
 
 var app = builder.Build();
 

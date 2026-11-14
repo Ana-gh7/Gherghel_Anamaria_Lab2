@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,6 +7,7 @@ using Gherghel_Anamaria_Lab2.Models;
 
 namespace Gherghel_Anamaria_Lab2.Pages.BookPages;
 
+[Authorize(Roles = "Admin")]
 public class CreateModel : BookCategoriesPageModel
 {
     private readonly Gherghel_Anamaria_Lab2Context _context;
@@ -33,7 +35,6 @@ public class CreateModel : BookCategoriesPageModel
 
         return Page();
     }
-
 
     public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
     {
@@ -65,7 +66,6 @@ public class CreateModel : BookCategoriesPageModel
 
         return RedirectToPage("./Index");
     }
-
 
     private void LoadLists()
     {
